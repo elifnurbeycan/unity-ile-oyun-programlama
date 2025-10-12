@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerMovement_2DAxes : MonoBehaviour
+public class PlayerMovement_HorizontalVertical : MonoBehaviour
 {
     public float speed = 3f;
 
