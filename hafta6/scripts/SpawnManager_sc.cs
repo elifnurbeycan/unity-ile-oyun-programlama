@@ -15,7 +15,6 @@ public class SpawnManager_sc : MonoBehaviour
     [SerializeField]
     bool stopSpawning = false;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         StartCoroutine(SpawnEnemyRoutine());
@@ -50,6 +49,7 @@ public class SpawnManager_sc : MonoBehaviour
             GameObject TripleShotBonus = Instantiate(bonusPrefabs[randomBonus], position, Quaternion.identity);
         }
     }
+  
     
     public void OnPlayerDeath()
     {
