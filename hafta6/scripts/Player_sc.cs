@@ -35,16 +35,17 @@ public class Player_sc : MonoBehaviour
 
     [SerializeField]
     GameObject shieldVisualizer;
+    
 
-
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         transform.position = new Vector3(0, 0, 0);
+        if (shieldVisualizer != null)
+            shieldVisualizer.SetActive(false);
+
+        
     }
 
-    // Update is called once per frame
     void Update()
     {
         CalculateMovement();
@@ -98,11 +99,14 @@ public class Player_sc : MonoBehaviour
 
     public void Damage()
     {
-
+        // Önce kalkan kontrolü
         if (isShieldBonusActive)
         {
             isShieldBonusActive = false;
-            shieldVisualizer.SetActive(false);
+
+            if (shieldVisualizer != null)
+                shieldVisualizer.SetActive(false);
+
             return;
         }
 
@@ -110,8 +114,9 @@ public class Player_sc : MonoBehaviour
 
         if (lives == 0)
         {
-            SpawnManager_sc spawnManager_sc = GameObject.Find("Spawn_Manager").
-                                                            GetComponent<SpawnManager_sc>();
+            SpawnManager_sc spawnManager_sc = GameObject
+                .Find("Spawn_Manager")
+                .GetComponent<SpawnManager_sc>();
 
             if (spawnManager_sc != null)
             {
@@ -119,7 +124,7 @@ public class Player_sc : MonoBehaviour
             }
             else
             {
-                Debug.LogError("Palyer_sc::Damage spawnManager_sc is NULL");
+                Debug.LogError("Player_sc::Damage spawnManager_sc is NULL");
             }
 
             Destroy(this.gameObject);
@@ -142,7 +147,8 @@ public class Player_sc : MonoBehaviour
     public void ShieldBonusActive() //shield şeklinde yap
     {
         isShieldBonusActive = true;
-        shieldVisualizer.SetActive(true);
+        if (shieldVisualizer != null)
+            shieldVisualizer.SetActive(true);
     }
 
     IEnumerator TripleShotCancelRoutine()
@@ -158,7 +164,7 @@ public class Player_sc : MonoBehaviour
         speed /= speedMultiplier;
     }
 
-    //shield için cancel eklenebilir burada bak tekrardan
+    //shield için cancel eklenebilir
 
 
 }
