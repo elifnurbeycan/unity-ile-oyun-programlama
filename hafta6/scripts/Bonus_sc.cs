@@ -39,15 +39,13 @@ public class Bonus_sc : MonoBehaviour
                         break;
                     // 2 Kalkan bonus'unu temsil eder
                     case 2:
-                        Debug.Log("Kalkan bonus'u aktif");
+                        player_sc.ShieldBonusActive();
                         break;
-                    // Yalnızca 3 tane tanımladık. Bunların dışındakiler hata durumu!
                     default:
                         Debug.Log("Hata Durumu!");
                         break;
                 }
             }
-            // Bonus nesnesini yok et
             Destroy(this.gameObject);
         }
     }
