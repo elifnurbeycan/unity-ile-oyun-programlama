@@ -6,66 +6,79 @@ public class Enemy_sc : MonoBehaviour
     int speed = 4;
 
     Player_sc player_sc;
-
-
     Animator animator;
 
     void Start()
     {
-        player_sc = GameObject.Find("Player").GetComponent<Player_sc>();
+        // Player'ı bul ve scriptini al
+        GameObject playerObj = GameObject.Find("Player");
+        if (playerObj != null)
+        {
+            player_sc = playerObj.GetComponent<Player_sc>();
+        }
 
         animator = GetComponent<Animator>();
     }
 
-
-    // Update is called once per frame
     void Update()
     {
+        // Aşağı doğru hareket
         this.transform.Translate(Vector3.down * speed * Time.deltaTime);
 
+        // Ekranın altına inince yok olsun (SpawnManager yenisini üretiyor)
         if (this.transform.position.y < -5.5f)
         {
-            this.transform.position = new Vector3(Random.Range(-9.5f, 9.5f),
-                                                    7.4f,
-                                                    0);
+            Destroy(this.gameObject);
         }
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("Çarpışma: " + other.tag);
-
+        // 1. Durum: OYUNCU İLE ÇARPIŞMA
         if (other.tag == "Player")
         {
-            //Player'ın canını bir eksilt
-            //Player_sc player_sc = other.transform.GetComponent<Player_sc>();
-
+            // Player scriptine eriş ve hasar ver
             if (player_sc != null)
             {
                 player_sc.Damage();
             }
-            //patlama animasyonunu göster
+
+            // Animasyonu Tetikle
             animator.SetTrigger("OnEnemyDeath");
-            //hızı sıfırla
+            
+            // Hızı Sıfırla (Olduğu yerde patlasın)
             speed = 0;
-            //kendini yok et
-            Destroy(this.gameObject, 2.3f);
+
+            //Patlarken tekrar hasar vermemesi için çarpışmayı kapat
+            GetComponent<Collider2D>().enabled = false;
+
+            // Gecikmeli Yok Etme
+            Destroy(this.gameObject, 2.6f);
         }
+
+        // 2. Durum: LAZER İLE ÇARPIŞMA
         else if (other.tag == "Laser")
         {
+            // Lazeri hemen yok et
             Destroy(other.gameObject);
 
+            // Puan Ekle
             if (player_sc != null)
             {
                 player_sc.AddScore(10);
             }
-            //patlama animasyonunu göster
+
+            // Animasyonu Tetikle
             animator.SetTrigger("OnEnemyDeath");
-            //hızı sıfırla 
+
+            // Hızı Sıfırla
             speed = 0;
-            //kendini yok et
-            Destroy(this.gameObject);
+
+            //Patlarken başka lazerler çarpmasın diye collider'ı kapat
+            GetComponent<Collider2D>().enabled = false;
+
+            //Animasyon bitene kadar bekle (2.6 sn)
+            Destroy(this.gameObject, 2.6f); 
         }
     }
-
 }
