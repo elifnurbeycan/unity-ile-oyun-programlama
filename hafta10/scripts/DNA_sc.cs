@@ -19,7 +19,6 @@ public class DNA_sc
         genes.Clear();
         for (int i = 0; i < this.dnaLength; i++)
         {
-            // DÜZELTİLDİ: SetRandom.Range yerine Unity'nin kendi Random.Range fonksiyonu kullanıldı.
             genes.Add(Random.Range(0, this.maxValues));
         }
     }
