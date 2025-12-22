@@ -1,15 +1,14 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Linq; // DÜZELTİLDİ: Listeleri sıralamak (OrderBy) için bu kütüphane gereklidir.
+using System.Linq;
 
 public class PopulationManager_sc : MonoBehaviour
 {
     [SerializeField]
     GameObject botPrefab;
 
-    public int populationSize = 10; // Yazım düzeltildi: poplationSize -> populationSize
+    public int populationSize = 10;
 
-    // DÜZELTİLDİ: Liste tanımı yarım kalmıştı, tamamlandı.
     public List<GameObject> population = new List<GameObject>();
 
     public static float elapsed = 0;
@@ -47,7 +46,6 @@ public class PopulationManager_sc : MonoBehaviour
 
     void Update()
     {
-        // DÜZELTİLDİ: time.deltaTime -> Time.deltaTime (Büyük T ile)
         elapsed += Time.deltaTime;
         
         if (elapsed >= trialTime)
@@ -82,14 +80,11 @@ public class PopulationManager_sc : MonoBehaviour
 
     void BreedNewPopulation()
     {
-        // DÜZELTİLDİ: 'object' kelimesi rezerve olduğu için 'o' değişkeni kullanıldı.
         // En uzun süre hayatta kalanlar listenin sonuna gelir.
         List<GameObject> sortedList = population.OrderBy(o => o.GetComponent<Brain_sc>().timeAlive).ToList();
 
         population.Clear();
 
-        // DÜZELTİLDİ: Döngü sınırı 'sortedList.Count - 1' yapıldı.
-        // Böylece i+1 listenin dışına çıkıp hata vermeyecek.
         for (int i = (int)(sortedList.Count / 2.0f); i < sortedList.Count - 1; i++)
         {
             population.Add(Breed(sortedList[i], sortedList[i + 1]));
